@@ -1,0 +1,8 @@
+category: Graphics
+requires: libfreetype6 libgcc1 libjbig2dec0 libjpeg8 libopenjpeg2 libX11_6 libXext6 zlib0
+sdesc: "PDF viewer and toolkit"
+ldesc: "MuPDF is a lightweight PDF viewer and toolkit written in 
+portable C. The renderer in MuPDF is tailored for high quality 
+anti-aliased graphics. It renders text with metrics and spacing accurate 
+to within fractions of a pixel for the highest fidelity in reproducing 
+the look of a printed page on screen."
