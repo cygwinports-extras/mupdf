@@ -1,7 +1,6 @@
 DESCRIPTION="PDF viewer and toolkit"
 HOMEPAGE="http://mupdf.com/"
-SRC_URI="http://mupdf.com/download/source/${P}.tar.gz"
-SRC_DIR=${PN}
+SRC_URI="http://mupdf.googlecode.com/files/${P}-source.tar.gz"
 
 PKG_NAMES="${PN} lib${PN}-devel"
 mupdf_CONTENTS="usr/bin/ usr/share/"
