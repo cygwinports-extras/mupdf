@@ -1,0 +1,28 @@
+CATEGORY="Graphics"
+SUMMARY="PDF viewer and toolkit"
+DESCRIPTION="MuPDF is a lightweight PDF viewer and toolkit written in portable
+C. The renderer in MuPDF is tailored for high quality anti-aliased graphics.
+It renders text with metrics and spacing accurate to within fractions of a
+pixel for the highest fidelity in reproducing the look of a printed page on
+screen."
+HOMEPAGE="http://mupdf.com/"
+SRC_URI="http://mupdf.googlecode.com/files/${P}-source.tar.gz"
+SRC_DIR="${P}-source"
+
+PKG_NAMES="${PN} lib${PN}-devel"
+mupdf_CONTENTS="usr/bin/ usr/share/"
+libmupdf_devel_REQUIRES="libfreetype-devel libjbig2dec-devel libjpeg-devel libopenjpeg-devel zlib-devel"
+libmupdf_devel_CONTENTS="usr/include/ usr/lib/"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	cygmake OS=Linux build=release
+}
+
+src_install() {
+	cd ${B}
+	cyginstall OS=Linux build=release prefix=${D}/usr
+	chmod -x ${D}/usr/include/*.h ${D}/usr/lib/*.a ${D}/usr/share/man/man1/*
+	doinclude */*-internal.h
+}
