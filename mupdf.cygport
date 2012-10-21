@@ -1,3 +1,6 @@
+NAME="mupdf"
+VERSION=1.1
+RELEASE=1
 CATEGORY="Graphics"
 SUMMARY="PDF viewer and toolkit"
 DESCRIPTION="MuPDF is a lightweight PDF viewer and toolkit written in portable
