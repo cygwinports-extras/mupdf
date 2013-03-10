@@ -1,5 +1,5 @@
 NAME="mupdf"
-VERSION=1.1
+VERSION=1.2
 RELEASE=1
 CATEGORY="Graphics"
 SUMMARY="PDF viewer and toolkit"
@@ -9,7 +9,7 @@ It renders text with metrics and spacing accurate to within fractions of a
 pixel for the highest fidelity in reproducing the look of a printed page on
 screen."
 HOMEPAGE="http://mupdf.com/"
-SRC_URI="http://mupdf.googlecode.com/files/${P}-source.tar.gz"
+SRC_URI="http://mupdf.googlecode.com/files/${P}-source.zip"
 SRC_DIR="${P}-source"
 
 PKG_NAMES="${PN} lib${PN}-devel"
@@ -20,12 +20,14 @@ libmupdf_devel_CONTENTS="usr/include/ usr/lib/"
 src_compile() {
 	lndirs
 	cd ${B}
+	# force usage of system dependencies
+	rm -f thirdparty/*/README
 	cygmake OS=Linux build=release
 }
 
 src_install() {
 	cd ${B}
-	cyginstall OS=Linux build=release prefix=${D}/usr
+	cyginstall OS=Linux build=release prefix=/usr
 	chmod -x ${D}/usr/include/*.h ${D}/usr/lib/*.a ${D}/usr/share/man/man1/*
 	doinclude */*-internal.h
 }
