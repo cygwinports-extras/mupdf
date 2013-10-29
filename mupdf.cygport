@@ -1,6 +1,6 @@
 NAME="mupdf"
 VERSION=1.2
-RELEASE=1
+RELEASE=2
 CATEGORY="Graphics"
 SUMMARY="PDF viewer and toolkit"
 DESCRIPTION="MuPDF is a lightweight PDF viewer and toolkit written in portable
@@ -9,11 +9,12 @@ It renders text with metrics and spacing accurate to within fractions of a
 pixel for the highest fidelity in reproducing the look of a printed page on
 screen."
 HOMEPAGE="http://mupdf.com/"
-SRC_URI="http://mupdf.googlecode.com/files/${P}-source.zip"
-SRC_DIR="${P}-source"
+SRC_URI="http://mupdf.googlecode.com/files/${NAME}-${VERSION}-source.zip"
+SRC_URI+=" http://pkgs.fedoraproject.org/cgit/mupdf.git/plain/mupdf.desktop"
+SRC_DIR="${NAME}-${VERSION}-source"
 
-PKG_NAMES="${PN} lib${PN}-devel"
-mupdf_CONTENTS="usr/bin/ usr/share/"
+PKG_NAMES="${NAME} lib${NAME}-devel"
+mupdf_CONTENTS="etc/ usr/bin/ usr/share/"
 libmupdf_devel_REQUIRES="libfreetype-devel libjbig2dec-devel libjpeg-devel libopenjpeg-devel zlib-devel"
 libmupdf_devel_CONTENTS="usr/include/ usr/lib/"
 
@@ -30,4 +31,7 @@ src_install() {
 	cyginstall OS=Linux build=release prefix=/usr
 	chmod -x ${D}/usr/include/*.h ${D}/usr/lib/*.a ${D}/usr/share/man/man1/*
 	doinclude */*-internal.h
+
+	doicon ${S}/debian/mupdf.xpm
+	domenu ${S}/mupdf.desktop
 }
