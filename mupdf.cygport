@@ -1,6 +1,6 @@
 NAME="mupdf"
-VERSION=1.2
-RELEASE=2
+VERSION=1.8
+RELEASE=1
 CATEGORY="Graphics"
 SUMMARY="PDF viewer and toolkit"
 DESCRIPTION="MuPDF is a lightweight PDF viewer and toolkit written in portable
@@ -9,29 +9,41 @@ It renders text with metrics and spacing accurate to within fractions of a
 pixel for the highest fidelity in reproducing the look of a printed page on
 screen."
 HOMEPAGE="http://mupdf.com/"
-SRC_URI="http://mupdf.googlecode.com/files/${NAME}-${VERSION}-source.zip"
+SRC_URI="http://mupdf.com/downloads/archive/mupdf-${VERSION}-source.tar.gz"
 SRC_URI+=" http://pkgs.fedoraproject.org/cgit/mupdf.git/plain/mupdf.desktop"
 SRC_DIR="${NAME}-${VERSION}-source"
+PATCH_URI="http://pkgs.fedoraproject.org/cgit/mupdf.git/plain/mupdf-1.7a-openjpeg.patch"
 
 PKG_NAMES="${NAME} lib${NAME}-devel"
 mupdf_CONTENTS="etc/ usr/bin/ usr/share/"
-libmupdf_devel_REQUIRES="libfreetype-devel libjbig2dec-devel libjpeg-devel libopenjpeg-devel zlib-devel"
+libmupdf_devel_REQUIRES="libfreetype-devel libjbig2dec-devel libjpeg-devel libopenjp2-devel zlib-devel"
 libmupdf_devel_CONTENTS="usr/include/ usr/lib/"
 
 src_compile() {
 	lndirs
 	cd ${B}
 	# force usage of system dependencies
-	rm -f thirdparty/*/README
+	rm -f thirdparty/[^m]*/README* thirdparty/*/*/CMakeLists.txt
+	CFLAGS+=" -DJBIG_NO_MEMENTO"
 	cygmake OS=Linux build=release
 }
 
 src_install() {
 	cd ${B}
 	cyginstall OS=Linux build=release prefix=/usr
-	chmod -x ${D}/usr/include/*.h ${D}/usr/lib/*.a ${D}/usr/share/man/man1/*
-	doinclude */*-internal.h
+	doinclude thirdparty/mujs/mujs.h
+	dolib build/release/libmujs.a
+	chmod -x ${D}/usr/include/mupdf/*.h ${D}/usr/include/mupdf/*/*.h
+	chmod -x ${D}/usr/lib/*.a ${D}/usr/share/man/man1/*
 
-	doicon ${S}/debian/mupdf.xpm
+	insinto /usr/share/icons/hicolor/36x36/apps
+	newins ${S}/platform/android/res/drawable-ldpi/icon.png mupdf.png
+	insinto /usr/share/icons/hicolor/48x48/apps
+	newins ${S}/platform/android/res/drawable-mdpi/icon.png mupdf.png
+	insinto /usr/share/icons/hicolor/72x72/apps
+	newins ${S}/platform/android/res/drawable-hdpi/icon.png mupdf.png
+	insinto /usr/share/icons/hicolor/96x96/apps
+	newins ${S}/platform/android/res/drawable-xhdpi/icon.png mupdf.png
+
 	domenu ${S}/mupdf.desktop
 }
